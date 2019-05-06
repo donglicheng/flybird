@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		canvas {
+			display: block;
+			border: 1px solid red;
+			margin: 0 auto;
+		}
+		.start {
+			width: 360px;
+			height: 512px;
+			background: url(images/bg_day.png) no-repeat ;
+			background-size: cover;
+			position: absolute;
+			left: 50%;
+			margin-left: -180px;
+		}
+		.start img {
+			position: absolute;;
+			left: 50%;
+			margin-left: -98px;
+			top: 50%;
+			margin-top: -31px;
+		}
+		.start span {
+			width: 116px;
+			height: 70px;
+			position: absolute;;
+			left: 50%;
+			margin-left: -58px;
+			top: 50%;
+			margin-top: 20px;
+			background: url(images/button_play.png) no-repeat 0 0 ;
+		}
+		.start span:hover {
+			background-position: -6px -73px;
+		}
+	</style>
+</head>
+<body>
+	<div class="start" id="start">
+		<img src="images/text_ready.png" alt="">
+		<span></span>
+	</div>
+	<canvas id="myCanvas" width="360" height="512"></canvas>
+	<script type="text/javascript" src="js/Game.js"></script>
+	<script type="text/javascript" src="js/Pipe.js"></script>
+	<script type="text/javascript" src="js/Bird.js"></script>
+	<script type="text/javascript" src="js/Background.js"></script>
+	<script type="text/javascript">
+		var arr = ["images/bird0_0.png", "images/bird0_1.png", "images/bird0_2.png", "images/bg_day.png", "images/land.png", "images/pipe_down.png", "images/pipe_up.png","images/text_game_over.png","images/text_game_over.png"]
+		loadImage(arr,function(imgArr) {
+			var canvas = document.getElementById("myCanvas");
+			var ctx = canvas.getContext("2d");
+			var bird = new Bird(imgArr.slice(0,3),100,100);
+			var pipe = new Pipe(imgArr[5],imgArr[6],4,360);
+			var land = new Background(imgArr[4],4,0,400);
+			var mountain = new Background(imgArr[3],2,0,0);
+			var start = document.getElementById("start");
+			// window.g = new Game(ctx,bird,pipe,land,mountain,imgArr[7]);
+			start.onclick = function() {
+				new Game(ctx,bird,pipe,land,mountain,imgArr[7]);
+				start.style.display = "none";
+			};
+			console.log(mountain);
+		})
+
+		function loadImage(arr, callBack) {
+			var idx = 0;
+			var loadImageArr = [];
+			arr.forEach(function(value, index) {
+				var img = new Image();
+				img.src = value;
+				img.onload = function() {
+					idx++;
+					loadImageArr[index] = this;
+					if(idx === arr.length) {
+						callBack(loadImageArr);
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>
